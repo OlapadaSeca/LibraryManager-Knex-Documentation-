@@ -1,0 +1,546 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Swagger Library Manager - OpenAPI 3.0",
+        "description": "Esta é a documentação da API para gerenciamento de uma biblioteca",
+        "contact": {
+            "email": "bruno.98902@aluno.pr.senac.br"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3333"
+        }
+    ],
+    "tags": [
+        {
+            "name": "books",
+            "description": "Gerenciamento dos livros da biblioteca"
+          },
+          {
+            "name": "loans",
+            "description": "Realize empréstimos e devoluções dos livros"
+          },
+          {
+            "name": "users",
+            "description": "Operações a respeito do usuário"
+          }
+    ],
+    "paths": {
+        "/user": {     
+    "post": {
+                "tags": ["users"],
+                "summary": "Cria um novo usuário",
+                "description": "Cria um novo usuário passando suas informações básicas",
+                "requestBody": {
+                    "content": {
+                        "apllication/json": {
+                            "schema": {
+                                "type": "#components/schemas/User"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "name": "Wagner",
+                                        "email": "wagner@mail.com",
+                                        "telefone": "41 9999-9999"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Usuário já cadastrado" 
+                    },
+                    "200": {
+                        "description": "Usuário criado com sucesso!",
+                        "content": {
+                            "apllication/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "#components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+    },    
+    "get":{
+                  "tags": ["users"],
+            "summary": "Lista usuarios já criados",
+                 "description": "Lista os usuarios criados junto com suas informações",
+                  "requestBody":{
+             "content":{
+                    "apllication/json":{
+                        "schema":{
+                           "items":{
+                            "type":"string"
+                           }
+                        },
+                        "examples":{
+                            "user": ["users"]
+                        },
+                        "responses":{
+                            "400":{
+                                "description":"Lista de usuarios está vazia"
+                            },
+                            "200":{
+                                "description":"Lista de usuarios encontrada",
+                                "content":{
+                                    "apllication/json":{
+                                        "schema":{
+                                            "type": "object"
+                                            
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }    
+        }
+    },
+    "put":{
+        "tags": ["users"],
+        "summary": "Atualiza informações spbre o usuário",
+        "description": "Atualiza nome, email, telefone",
+        "operationId": "updateUser",
+             "parameters":[{
+                 "name": "name,email,telefone",
+                 "in": "path",
+                 "description":"Atualiza as informações básicas",
+                 "required": true,
+                 "schema":{
+                     "type":"string"
+             }
+        }],
+     "responses": {
+         "200": {
+           "description": "Operação feita com sucesso",
+           "content": {
+             "application/json": {
+               "schema": {
+                "type":"object"
+               }
+             }             
+           }
+         },
+         "400": {
+           "description": "Id ou nome de usuario invalido"
+         },
+         "404": {
+           "description": "Usuario não encontrado"
+         }
+       } 
+     },
+     "delete":{
+        "tags":["users"],
+          "summary": "Deleta o usuario ",
+          "description": "Deleta todas as informações do usuario",
+          "operationId": "deleteUser",
+          "parameters": [{
+              "name": "idUser",
+              "in": "path",
+              "description": "O id á ser deletado",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }],
+          "responses": {
+            "400": {
+              "description": "O id do usuario está invalido ou não existe"
+            },
+            "404": {
+              "description": "Usuario não encontrado"
+            }
+          }
+     }
+    },
+    "/user/listUserById":{
+      "get":{
+        "tags": ["users"],
+        "summary": "Lista usuario pelo Id",
+        "description": "Lista as informações do usuario pelo Id",
+        "parameters":[{
+         "name":"idUsers",
+         "in":"query",
+         "description":"Atualiza usuario pelo id",
+         "schema":{
+             "type":"integer"
+     }
+     }],
+        
+        "responses":{
+            "200":{
+                "description":"Usuario encontrado",
+                "content":{
+                "apllication/json":{
+                "schema":{
+                "type": "array",
+                "items":{
+                    "type":"#components/schemas/User"
+                }
+                                }
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"Usuario não encontrado"
+                    }
+                }         
+            }
+        },        
+            "/books":{
+              "post":{
+                "tags":["books"],
+                "summary": "Insere livros na biblioteca",
+                "description":"Criar o livro com suas informações",
+                "requestBody": {
+                    "content": {
+                        "apllication/json": {
+                            "schema": {
+                                "type": "#components/schemas/Book"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "author": "Wagner",
+                                        "title": "Como passar raiva na aula de programador de sistemas",
+                                        "pages": "265"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Livro já inserido" 
+                    },
+                    "200": {
+                        "description": "Livro inserido com sucesso!",
+                        "content": {
+                            "apllication/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "#components/schemas/Book"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+              },
+              "get":{
+                "tags":["books"],
+                "summary": "Lista livros já criados",
+                 "description": "Lista os livros criados junto com suas informações",
+                  "requestBody":{
+             "content":{
+                    "apllication/json":{
+                        "schema":{
+                           "items":{
+                            "type":"string"
+                           }
+                        },
+                        "examples":{
+                            "user": ["users"]
+                        },
+                        "responses":{
+                            "400":{
+                                "description":"Lista de livros está vazia"
+                            },
+                            "200":{
+                                "description":"Lista de livros encontrada",
+                                "content":{
+                                    "apllication/json":{
+                                        "schema":{
+                                            "type": "object"
+                                            
+
+                               }
+                             }
+                           }
+                         }
+                      }
+                   }
+                }
+             }
+          },
+          "delete":{
+            "tags":["books"],
+          "summary": "Deleta o livro ",
+          "description": "Deleta todas as informações do livro",
+          "operationId": "deleteBook",
+          "parameters": [{
+              "name": "idBooks",
+              "in": "path",
+              "description": "O id á ser deletado",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }],
+          "responses": {
+            "400": {
+              "description": "O id do livro está invalido ou não existe"
+            },
+            "404": {
+              "description": "Livro não encontrado"
+            }
+          }
+          }
+
+    },
+    "/books/listBooksById":{
+        "get":{
+          "tags": ["books"],
+          "summary": "Lista livro pelo Id",
+          "description": "Lista as informações do livro pelo Id",
+          "parameters":[{
+           "name":"idBooks",
+           "in":"query",
+           "description":"Atualiza livro pelo id",
+           "schema":{
+               "type":"integer"
+       }
+       }],
+          
+          "responses":{
+              "200":{
+                  "description":"Livro encontrado",
+                  "content":{
+                  "apllication/json":{
+                  "schema":{
+                  "type": "array",
+                  "items":{
+                      "type":"#components/schemas/Book"
+                  }
+                                  }
+                              }
+                          }
+                      },
+                      "400":{
+                          "description":"Livro não encontrado"
+                      }
+                  }         
+              }
+    },
+    "/loan/{id_users}/{id_book}":{
+        "post":
+        {
+        "tags": ["loans"],
+                "summary": "Adiciona um livro na lista de emprestimo",
+                "description": "Adiciona um livro já existente na lista de emprestimo",
+                "requestBody": {
+                    "content": {
+                        "apllication/json": {
+                            "schema": {
+                                "type": "#components/schemas/loans"
+                            },
+                            "examples": {
+                                "list of book": {
+                                    "value": {
+                                        "idArmaBooks": "IdArmaBooks",
+                                        "id_users":"idUsers",
+                                        "id_book": "idBooks"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Livro não disponível para emprestimo" 
+                    },
+                    "200": {
+                        "description": "Livro emprestado com sucesso!",
+                        "content": {
+                            "apllication/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "#components/schemas/loans"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+    },
+    "/loan/{id_users}/listBorrowedBook":{
+         "get":{
+            "tags": ["loans"],
+            "summary": "Lista de livros emprestados",
+            "description": "Lista aos livros emprestados pelo usuario",
+            "parameters":[{
+             "name":"idUsers",
+             "in":"query",
+             "description":"Exibe a lista",
+             "schema":{
+                 "type":"integer"
+         }
+         }],
+            
+            "responses":{
+                "200":{
+                    "description":"Lista encontrada",
+                    "content":{
+                    "apllication/json":{
+                    "schema":{
+                    "type": "array",
+                    "items":{
+                        "type":"#components/schemas/loans"
+                    }
+                                    }
+                                }
+                            }
+                        },
+                        "400":{
+                            "description":"Lista não encontrada"
+                        }
+                    }         
+                }
+         },
+         "/loan/{user_id}":
+         { 
+            "get":{
+                "tags": ["loans"],
+                "summary": "Mostra o total de livros emprestados",
+                "description": "Mostra o total de livros emprestados do usuario pelo tempo que ele emprestou",
+                "parameters":[{
+                 "name":"idUsers",
+                 "in":"query",
+                 "description":"Exibe a lista",
+                 "schema":{
+                     "type":"integer"
+             }
+             }],
+                
+                "responses":{
+                    "200":{
+                        "description":"Lista encontrada",
+                        "content":{
+                        "apllication/json":{
+                        "schema":{
+                        "type": "array",
+                        "items":{
+                            "type":"#components/schemas/loans"
+                        }
+                                        }
+                                    }
+                                }
+                            },
+                            "400":{
+                                "description":"Lista não encontrada"
+                            }
+                        }         
+            }
+            
+                },
+                "/loan/devo/{users_id}/{book_id}":{
+                    "put":{    
+                          "tags": ["loans"],
+                          "summary": "Retorna um livro",
+                          "description": "Retorna um livro para lista",
+                          "operationId": "returnLoans",
+                          "parameters":[{
+                              "name":"user_id",
+                              "in":"path",
+                              "description": "filtra os usuarios por id",
+                              "schema":{
+                                  "type": "integer"
+                              }
+                          }],
+                      
+                          "requestBody": {
+                              "content": {
+                                  "apllication/json": {
+                                      "schema": {
+                                          "type": "object"
+                                      }
+                                     
+                                  }
+                              }
+                          },
+                          "responses": {
+                              "404": {
+                                  "description": "O id do livro ou do usuario está incorreto" 
+                              },
+                              "200": {
+                                  "description": "Livro devolvido com sucesso!",
+                                  "content": {
+                                      "apllication/json": {
+                                          "schema": {
+                                              "type": "object",
+                                              "items": {
+                                                  "type": "#components/schemas/loans"
+                                              }
+                                            }}     
+                                       }
+                                      }
+                                  }
+                                }
+                              }
+
+                },
+
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "telefone": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Book":{
+                "type": "object",
+                "properties":{
+                    "author":{
+                        "type":"string"
+                    },
+                    "title":{
+                        "type":"string"
+                    },
+                    "pages":{
+                        "type":"string"
+                    }
+                    
+                }
+            },
+            "Loans":{
+                "type":"object",
+                "properties":{
+                    "idArmaBooks":{
+                     
+                          "type":"integer"
+                         
+                    },
+                   
+                    "id_book":{
+                    "type": "integer"
+                    },
+                    "id_users":{
+                     "type":"integer"
+                    }}
+                }
+        }
+    }}
